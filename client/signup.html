@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/all.css" />
+    <title>signup</title>
+  </head>
+  <body>
+    <div
+      class="w-full flex justify-center items-center flex-col h-screen bg-slate-50 p-4"
+    >
+      <h1 class="text-6xl p-4 text-violet-600">Sign up</h1>
+      <div
+        class="text-violet-600 text-6xl p-4 rounded-full border-2 border-violet-600 my-3"
+      >
+        <i class="fa-solid fa-people-robbery fa-fw"></i>
+      </div>
+      <div class="w-full flex items-center justify-center">
+        <ul
+          id="errorBox"
+          class="text-red-600 p-2 border border-red-600 bg-red-300"
+        ></ul>
+
+        <form
+          id="form"
+          method="post"
+          class="p-5 w-4/6 flex flex-col justify-center items-center columns-2"
+        >
+          <div class="w-4/6 flex items-baseline justify-between">
+            <input
+              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+              type="text"
+              name="firstname"
+              id="firstname"
+              placeholder="First name"
+            />
+            <input
+              type="text"
+              name="lastname"
+              id="lastname"
+              placeholder="Last name"
+              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+            />
+          </div>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+          />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm password"
+            class="outline-none text-lg placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 font-medium border-violet-600 rounded-lg"
+          />
+          <input
+            type="submit"
+            class="outline-none cursor-pointer border-2 border-violet-600 text-lg text-violet-600 hover:text-white hover:bg-violet-500 font-medium transition p-4 rounded-lg"
+            value="Signup"
+          />
+        </form>
+      </div>
+    </div>
+    <script type="module" src="js/signup.js"></script>
+  </body>
+</html>

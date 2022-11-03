@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta
+      name="google-signin-client_id"
+      content="845339981361-0m2744la51mtghhu8lt6d0qtscebrqbo.apps.googleusercontent.com"
+    /> -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/all.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <title>chat</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo"><i class="fa-solid fa-people-robbery fa-fw"></i></div>
+      <div class="register">
+        <a href="login.html" class="btn btn-log" id="login">Login</a>
+        <a href="signup.html" class="btn btn-sign" id="signup">Signup</a>
+        <a href="index.html" class="btn btn-sign" id="logout">logout</a>
+      </div>
+    </header>
+    <div class="container">
+      <div class="message-box" id="msgBox"></div>
+      <form action="" id="form">
+        <span class="element send-box">
+          <input type="text" placeholder="message" id="message" />
+          <button type="button" id="sendMsg">
+            <i class="fa-regular fa-paper-plane fa-fw"></i>
+          </button>
+        </span>
+        <span class="element room-box">
+          <input type="text" id="room" placeholder="room name" />
+          <button type="button" id="goRoom">
+            <i class="fa-regular fa-square-plus fa-fw"></i>
+          </button>
+        </span>
+      </form>
+    </div>
+    <script type="module" src="./js/index.js"></script>
+  </body>
+</html>

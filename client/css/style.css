@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Roboto:wght@300;400;700&family=Tajawal:wght@300;400;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+  --main-color: #6145fc;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Familjen Grotesk", sans-serif;
+}
+body {
+  background-color: #eee;
+  height: 100vh;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 15px 20px;
+  background-color: #fff;
+}
+header .logo {
+  padding: 15px;
+  border: 1px solid var(--main-color);
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+header .logo i {
+  color: var(--main-color);
+  font-size: 35px;
+}
+header .register .btn {
+  text-decoration: none;
+  font-size: 20px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: white;
+  background-color: var(--main-color);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+header .register .btn-sign {
+  margin-left: 12px;
+}
+#logout {
+  display: none;
+}
+.container {
+  margin: auto;
+  height: calc(100vh - 97px);
+  width: 80%;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+.container .message-box {
+  margin: 0px auto;
+  height: 400px;
+  width: 600px;
+  max-width: 100%;
+  padding: 10px 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow-y: auto;
+}
+/* width */
+.container .message-box::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.container .message-box::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+/* Handle */
+.container .message-box::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+  border-radius: 5px;
+  overflow: hidden;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+/* Handle on hover */
+.container .message-box::-webkit-scrollbar-thumb:hover {
+  background: #5235f8;
+}
+.container .message-box .msg {
+  padding: 10px;
+  width: fit-content;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 37%;
+  margin: 10px auto;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  transition: all 0.4s ease;
+  transform: translateX(-65%);
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -webkit-transform: translateX(-65%);
+  -moz-transform: translateX(-65%);
+  -ms-transform: translateX(-65%);
+  -o-transform: translateX(-65%);
+}
+.container .message-box .msg.reciver {
+  background-color: var(--main-color);
+}
+.container .message-box .msg.sender .main-msg {
+  color: rgb(22, 22, 22);
+}
+.container .message-box .msg.sender {
+  background-color: gainsboro;
+  transform: translateX(70%);
+  -webkit-transform: translateX(70%);
+  -moz-transform: translateX(70%);
+  -ms-transform: translateX(70%);
+  -o-transform: translateX(70%);
+}
+.container .message-box .msg:first-child {
+  margin: 0px auto 10px auto;
+}
+.container .message-box .msg .main-msg {
+  color: #fff;
+  font-size: 16px;
+}
+.container .message-box .msg .msg-name,
+.container .message-box .msg .msg-date {
+  font-size: 12px;
+  color: rgb(167, 167, 167);
+}
+.container #form {
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+  width: 600px;
+  max-width: 100%;
+  padding: 20px;
+}
+.container #form .element {
+  width: 100%;
+  padding: 0px 10px 10px 10px;
+  margin: auto;
+}
+.container #form span input {
+  padding: 10px 20px;
+  border: 2px solid var(--main-color);
+  background: #fff;
+  color: var(--main-color);
+  border-radius: 12px;
+  width: 80%;
+  font-size: 18px;
+  outline: none;
+  margin-left: 7px;
+}
+.container #form span ::placeholder {
+  color: #cac8daa8;
+  font-size: 18px;
+}
+.container #form span button {
+  padding: 10px;
+  border: 2px solid var(--main-color);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 7px;
+}
+.container #form span button i {
+  color: var(--main-color);
+}
