@@ -10,28 +10,28 @@
   </head>
   <body>
     <div
-      class="w-full flex justify-center items-center flex-col h-screen bg-slate-50 p-4"
+      class="w-full flex justify-center items-center flex-col h-screen bg-slate-50 px-3 py-2"
     >
-      <h1 class="text-6xl p-4 text-violet-600">Sign up</h1>
+      <h1 class="text-6xl px-4 py-2 text-violet-600">Sign up</h1>
       <div
-        class="text-violet-600 text-6xl p-4 rounded-full border-2 border-violet-600 my-3"
+        class="text-violet-600 text-6xl p-4 rounded-full border-2 border-violet-600 my-2"
       >
         <i class="fa-solid fa-people-robbery fa-fw"></i>
       </div>
       <div class="w-full flex items-center justify-center">
         <ul
-          id="errorBox"
-          class="text-red-600 p-2 border border-red-600 bg-red-300"
+          id="errorBoxSign"
+          class="hidden text-red-600 p-2 border border-red-600 bg-red-300"
         ></ul>
 
         <form
           id="form"
           method="post"
-          class="p-5 w-4/6 flex flex-col justify-center items-center columns-2"
+          class="px-4 py-2 w-4/6 flex flex-col justify-center items-center columns-2"
         >
           <div class="w-4/6 flex items-baseline justify-between">
             <input
-              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 border-violet-600 rounded-lg"
               type="text"
               name="firstname"
               id="firstname"
@@ -42,7 +42,7 @@
               name="lastname"
               id="lastname"
               placeholder="Last name"
-              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+              class="outline-none text-lg font-medium placeholder:text-lg w-5/12 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 border-violet-600 rounded-lg"
             />
           </div>
           <input
@@ -50,21 +50,21 @@
             name="email"
             id="email"
             placeholder="Email"
-            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 border-violet-600 rounded-lg"
           />
           <input
             type="password"
             name="password"
             id="password"
             placeholder="Password"
-            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 border-violet-600 rounded-lg"
+            class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 border-violet-600 rounded-lg"
           />
           <input
             type="password"
             name="confirmPassword"
             id="confirmPassword"
             placeholder="Confirm password"
-            class="outline-none text-lg placeholder:text-lg w-4/6 placeholder-violet-400 p-4 mb-4 text-violet-600 border-2 font-medium border-violet-600 rounded-lg"
+            class="outline-none text-lg placeholder:text-lg w-4/6 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 font-medium border-violet-600 rounded-lg"
           />
           <input
             type="submit"
@@ -73,6 +73,14 @@
           />
         </form>
       </div>
+      <p class="text-gray-400 text-lg">
+        If you have account
+        <a
+          href="./login.html"
+          class="text-lg text-violet-600 font-medium hover:text-violet-700"
+          >Login</a
+        >
+      </p>
     </div>
     <script type="module" src="js/signup.js"></script>
   </body>

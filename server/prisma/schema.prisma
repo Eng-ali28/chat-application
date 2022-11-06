@@ -8,29 +8,32 @@ datasource db {
 }
 
 model user {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id String @id @default(uuid())
+
   firstname String
   lastname  String
   email     String    @unique
   password  String
   inboxId   inbox[]
   messages  message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model inbox {
   id              String    @id @default(uuid())
-  lastMessageSent String
+  lastMessageSent String?
   userId          user[]
   messages        message[]
 }
 
 model message {
-  id      String @id @default(uuid())
-  content String
-  creator user   @relation(fields: [userId], references: [id])
-  userId  String
-  inbox   inbox  @relation(fields: [inboxId], references: [id])
-  inboxId String
+  id        String   @id @default(uuid())
+  content   String
+  creator   user     @relation(fields: [userId], references: [id])
+  userId    String
+  inbox     inbox    @relation(fields: [inboxId], references: [id])
+  inboxId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

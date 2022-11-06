@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/all.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <title>chat</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo"><i class="fa-solid fa-people-robbery fa-fw"></i></div>
+      <div class="register">
+        <a href="login.html" class="btn btn-log" id="login">Login</a>
+        <a href="signup.html" class="btn btn-sign" id="signup">Signup</a>
+        <a href="index.html" class="btn btn-sign" id="logout">logout</a>
+      </div>
+    </header>
+    <div class="container">
+      <div class="chatInfo" id="chatInfo">
+        <div class="myInfo" id="myinfo">
+          <h2 id="myName"></h2>
+          <h4 id="myEmail"></h4>
+        </div>
+        <div class="chats" id="chats">
+          <h2 style="color: #6145fc">Chats :</h2>
+          <ul class="listChat" id="listChat"></ul>
+        </div>
+        <div class="addChat">
+          <input
+            type="text"
+            placeholder="enter friend id"
+            id="addInput"
+            class="addInput"
+          />
+          <button type="button" id="addBtn" class="addBtn">Add chat</button>
+        </div>
+      </div>
+      <div class="msgInfo">
+        <div class="message-box" id="msgBox"></div>
+        <form action="" id="form">
+          <span class="element send-box">
+            <input type="text" placeholder="message" id="message" />
+            <button type="button" id="sendMsg">
+              <i class="fa-regular fa-paper-plane fa-fw"></i>
+            </button>
+          </span>
+          <span class="element room-box">
+            <input type="text" id="room" placeholder="room name" />
+            <button type="button" id="goRoom">
+              <i class="fa-regular fa-square-plus fa-fw"></i>
+            </button>
+          </span>
+        </form>
+      </div>
+    </div>
+    <script type="module" src="./js/index.js"></script>
+  </body>
+</html>

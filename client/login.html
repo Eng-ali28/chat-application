@@ -4,9 +4,64 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/all.css" />
     <title>login</title>
   </head>
   <body>
-    hello
+    <div
+      class="bg-slate-50 w-full h-screen px-10 py-5 grid grid-cols-1 sm:grid-cols-2 place-content-center"
+    >
+      <div
+        class="md:w-full md:h-screen flex justify-center items-center md:bg-violet-200"
+      >
+        <ul
+          id="errorBox"
+          class="hidden bg-red-300 border border-red-600 rounded-md w-fit h-fit p-6"
+        ></ul>
+      </div>
+      <div class="flex flex-col h-full justify-center items-center">
+        <h1 class="text-violet-600 font-medium text-6xl p-4 m-4">Login</h1>
+        <div
+          class="text-4xl text-violet-600 p-6 border-2 border-violet-600 rounded-full"
+        >
+          <i class="fa-solid fa-people-robbery fa-fw"></i>
+        </div>
+        <form
+          id="form"
+          class="flex flex-col justify-center items-center w-11/12"
+        >
+          <input
+            type="text"
+            name="email"
+            id="email"
+            placeholder="Email"
+            class="outline-none p-4 text-lg font-medium text-violet-600 border-2 my-3 w-2/3 border-violet-600 rounded-md placeholder:text-lg placeholder:text-violet-500"
+          />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            class="outline-none p-4 text-lg font-medium text-violet-600 border-2 my-3 w-2/3 border-violet-600 rounded-md placeholder:text-lg placeholder:text-violet-500"
+          />
+          <button
+            type="submit"
+            class="px-4 py-3 text-violet-600 border-2 border-violet-600 rounded-md font-medium text-lg hover:bg-violet-500 hover:text-white hover:transition"
+          >
+            Login
+          </button>
+        </form>
+        <p class="text-gray-400 text-lg mt-3">
+          If you don't have account
+          <a
+            href="./signup.html"
+            class="text-lg text-violet-600 font-medium hover:text-violet-700"
+            >Sign Up</a
+          >
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./js/login.js"></script>
   </body>
 </html>

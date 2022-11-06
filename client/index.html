@@ -4,41 +4,61 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <meta
-      name="google-signin-client_id"
-      content="845339981361-0m2744la51mtghhu8lt6d0qtscebrqbo.apps.googleusercontent.com"
-    /> -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link href="/dist/output.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/all.css" />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <title>chat</title>
+    <title>Document</title>
   </head>
   <body>
-    <header>
-      <div class="logo"><i class="fa-solid fa-people-robbery fa-fw"></i></div>
-      <div class="register">
-        <a href="login.html" class="btn btn-log" id="login">Login</a>
-        <a href="signup.html" class="btn btn-sign" id="signup">Signup</a>
-        <a href="index.html" class="btn btn-sign" id="logout">logout</a>
+    <header class="container flex items-center justify-around p-3">
+      <div class="logo p-4 border-2 rounded-md border-violet-600">
+        <i
+          class="fa-solid fa-people-robbery fa-fw text-3xl text-violet-600"
+        ></i>
+      </div>
+      <div class="flex items-center">
+        <a
+          href="login.html"
+          class="px-4 py-3 bg-violet-500 transition hover:bg-violet-600 text-white mr-2 text-xl rounded-md"
+          id="login"
+          >Login</a
+        >
+        <a
+          href="signup.html"
+          class="px-4 py-3 bg-violet-500 transition hover:bg-violet-600 text-white ml-2 text-xl rounded-md"
+          id="signup"
+          >Signup</a
+        >
       </div>
     </header>
-    <div class="container">
-      <div class="message-box" id="msgBox"></div>
-      <form action="" id="form">
-        <span class="element send-box">
-          <input type="text" placeholder="message" id="message" />
-          <button type="button" id="sendMsg">
-            <i class="fa-regular fa-paper-plane fa-fw"></i>
-          </button>
-        </span>
-        <span class="element room-box">
-          <input type="text" id="room" placeholder="room name" />
-          <button type="button" id="goRoom">
-            <i class="fa-regular fa-square-plus fa-fw"></i>
-          </button>
-        </span>
-      </form>
+    <div
+      class="w-full bg-slate-50 h-screen-mix flex flex-col lg:flex-row justify-center"
+    >
+      <div class="basis-2/5 self-center px-20">
+        <div class="flex flex-col items-start w-full">
+          <h1
+            class="text-4xl text-center bg-violet-500 text-white p-4 rounded-xl font-medium mb-5"
+          >
+            Enjoy Now
+          </h1>
+          <p class="text-xl text-gray-400 font-md mb-5">
+            create new account to start your special chat
+          </p>
+          <a
+            href="signup.html"
+            class="px-4 py-3 bg-violet-500 transition hover:bg-violet-600 text-white ml-2 text-xl rounded-md"
+            id="signup"
+            >Signup</a
+          >
+        </div>
+      </div>
+
+      <div class="basis-2/5 hidden lg:block self-center">
+        <img
+          src="./imgs/chat-logo.png"
+          class="max-w-full lg:w-2/3 self-center rounded-lg"
+          alt=""
+        />
+      </div>
     </div>
-    <script type="module" src="./js/index.js"></script>
   </body>
 </html>

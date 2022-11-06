@@ -15,9 +15,8 @@ prisma.$use(async (params, next) => {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(params.args.data.password, salt);
       params.args.data.password = hash;
-      console.log(params.args);
       const result = await next(params);
-
+      console.log(`resutl is ${result}`);
       return result;
     } catch (e) {
       createError(400, "error in bcrypt password");
@@ -58,6 +57,9 @@ exports.getAllUser = async (req, res, next) => {
             { firstname: { contains: keyWord.splite(" ")[0] } },
             { lastname: { contains: keyWord.splite(" ")[1] } },
           ],
+        },
+        include: {
+          inboxId: true,
         },
       });
       res.status(200).json({ result: users.length, hdata: users });

@@ -29,6 +29,9 @@ module.exports = (next, errorHandling, clientHandling, modelName, e) => {
     if (e.code == "P2021") {
       next(createError(400, `model ${modelName} not exists`));
     }
+    if (e.code == "P2025") {
+      next(createError(400, `${modelName} with this id doesn't exists`));
+    }
   }
   if (e instanceof clientHandling) {
     next(createError(400, `there aren't any ${modelName} exists. `));
