@@ -13,7 +13,8 @@ form.addEventListener("submit", async function (e) {
 
   const response = await axios.post(
     "http://localhost:3000/api/v1/auth/signup",
-    formData
+    formData,
+    { withCredentials: true }
   );
 
   if (response.data.errors) {

@@ -16,7 +16,6 @@ prisma.$use(async (params, next) => {
       const hash = await bcrypt.hash(params.args.data.password, salt);
       params.args.data.password = hash;
       const result = await next(params);
-      console.log(`resutl is ${result}`);
       return result;
     } catch (e) {
       createError(400, "error in bcrypt password");
@@ -26,7 +25,6 @@ prisma.$use(async (params, next) => {
 });
 exports.createUser = async (req, res, next) => {
   const { firstname, lastname, email, password } = req.body;
-  console.log("here is ", req.body);
   try {
     const user = await prisma.user.create({
       data: {
@@ -79,7 +77,6 @@ exports.getAllUser = async (req, res, next) => {
 exports.getSpecificUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    console.log(userId);
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
@@ -120,4 +117,41 @@ exports.deleteUser = async (req, res, next) => {
   const { userId } = req.params;
   await prisma.user.delete({ where: { id: userId } });
   res.status(204).json({ msg: "success" });
+};
+
+// desc     update status
+// route    PATCH /api/v1/user/:userId
+// access   public
+
+exports.updataStatusOnline = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        status: "online",
+      },
+    });
+    res.status(203).json({ data: user });
+  } catch (e) {
+    modelError(next, errorHandling, ClientErrorHandling, "user", e);
+  }
+};
+// desc     update status
+// route    PATCH /api/v1/user/:userId
+// access   public
+
+exports.updataStatusOffline = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        status: "offline",
+      },
+    });
+    res.status(203).json({ data: user });
+  } catch (e) {
+    modelError(next, errorHandling, ClientErrorHandling, "user", e);
+  }
 };

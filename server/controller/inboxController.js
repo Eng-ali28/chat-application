@@ -29,7 +29,6 @@ exports.createInbox = async (req, res, next) => {
 exports.getAllInbox = async (req, res, next) => {
   try {
     const { myId } = req.query;
-    console.log(`my id ${myId}`);
     const inboxes = await prisma.inbox.findMany({
       where: {
         userId: { some: { id: myId } },
@@ -37,12 +36,18 @@ exports.getAllInbox = async (req, res, next) => {
       select: {
         id: true,
         lastMessageSent: true,
+
         userId: {
-          select: { id: true, firstname: true, lastname: true, email: true },
+          select: {
+            id: true,
+            firstname: true,
+            status: true,
+            lastname: true,
+            email: true,
+          },
         },
       },
     });
-    console.log(inboxes);
     res.status(200).json({ inboxes });
   } catch (error) {
     modelError(next, errorHandling, ClientErrorHandling, "inbox", error);

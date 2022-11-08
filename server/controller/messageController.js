@@ -50,7 +50,6 @@ exports.updateMessage = async (req, res, next) => {
     }
     res.status(200).json({ message });
   } catch (error) {
-    console.log(error);
     modelError(next, errorHandling, ClientErrorHandling, "message", error);
   }
 };

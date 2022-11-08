@@ -21,12 +21,22 @@ if (userId) {
 if (!userId && window.location.pathname == "/chat.html") {
   window.location.pathname = "/";
 }
-logout.onclick = async function (e) {
-  e.preventDefault();
-  localStorage.removeItem("user");
-  window.location.href = "http://localhost:8080/";
-};
+const arrow = document.getElementById("arrow");
+const chatInfo = document.getElementById("chatInfo");
 
+// ======show/hide sidebar===
+arrow.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (chatInfo.getAttribute("attr-show") == "hidden") {
+    Object.assign(chatInfo, { style: "transform:translateX(0px);" });
+    Object.assign(arrow, { style: "transform:rotate(180deg);" });
+    chatInfo.setAttribute("attr-show", "visible");
+  } else {
+    Object.assign(chatInfo, { style: "transform:translateX(-95%);" });
+    Object.assign(arrow, { style: "transform:rotate(0deg);" });
+    chatInfo.setAttribute("attr-show", "hidden");
+  }
+});
 // ======get my chats========
 async function getMychats(userId) {
   try {
@@ -34,28 +44,58 @@ async function getMychats(userId) {
       `http://localhost:3000/api/v1/inbox/?myId=${userId}`,
       { withCredentials: true }
     );
-    console.log(response);
-    const chats = response.data.inboxes
-      .map((ele) => {
-        return ele.userId.filter((element) => element.id !== userId);
-      })
-      .flat();
+    // const chats = response.data.inboxes
+    //   .map((ele) => {
+    //     return ele.userId.filter((element) => element.id !== userId);
+    //   })
+    //   .flat();
+    console.log(userId);
+    const chats = response.data.inboxes.filter((ele) => ele.userId.length > 1);
+    console.log(chats);
     chats.forEach((friend) => {
+      const data = friend.userId.find((ele) => ele.id != userId);
+      // console.log(data);
       const li = document.createElement("li");
       li.setAttribute("id", "chatEle");
-      li.classList.add("nameFriend", "offline");
-      li.innerText = `${friend.firstname} ${friend.lastname}  \n${response.data.inboxes[0].id}`;
+      if (data.status == "offline") {
+        li.classList.add("nameFriend", "offline");
+      } else {
+        li.classList.add("nameFriend", "active");
+      }
+      li.innerText = `${data.firstname} ${data.lastname}  \n`;
+      const span = document.createElement("span");
+      span.className = "chatIds";
+      span.innerText = `${friend.id}`;
+      li.appendChild(span);
       listChat.appendChild(li);
     });
   } catch (error) {
     console.log(error);
   }
 }
+
+setTimeout(() => {
+  const chatId = document.querySelectorAll(".chatIds");
+  const arrChat = [...chatId];
+  for (let ele of arrChat) {
+    ele.onclick = (e) => {
+      navigator.clipboard.writeText(ele.innerText);
+      room.value = ele.innerText;
+    };
+  }
+}, 300);
+
 // ======socket section======
 const socketMsg = io("http://localhost:3000/chat");
-socketMsg.on("connect", () => {
-  socketMsg.emit("connectName", sName);
-  console.log("connect");
+socketMsg.on("connect", async () => {});
+socketMsg.emit("connectName", { name: sName, userId });
+socketMsg.on("connectUser", async (userId) => {
+  await axios.patch(
+    `http://localhost:3000/api/v1/user/${userId}/online`,
+    {},
+    { withCredentials: true }
+  );
+  socketMsg.emit("changeStatus", userId);
 });
 addBtn.addEventListener("click", async (e) => {
   try {
@@ -65,8 +105,10 @@ addBtn.addEventListener("click", async (e) => {
       {},
       { withCredentials: true }
     );
+    window.location.reload();
+    console.log(inboxInfo);
   } catch (error) {
-    console.log(error);
+    console.log("from here", error);
   }
 });
 let roomVal;
@@ -96,11 +138,11 @@ sendMsg.addEventListener("click", async (e) => {
     room: msg.inboxId,
     date: msg.createdAt.substring(0, 10),
   });
-  console.log(response);
   message.value = "";
 });
 async function displayMsg() {
   try {
+    msgBox.innerHTML = "";
     const response = await axios.get(
       `http://localhost:3000/api/v1/messages/${roomVal}`,
       { withCredentials: true }
@@ -108,19 +150,33 @@ async function displayMsg() {
     const messageInfo = response.data.messages;
     console.log(messageInfo);
     messageInfo.forEach((ele) => {
-      console.log(ele);
       pushMsg(ele);
     });
   } catch (error) {
     console.log(error);
   }
 }
-socketMsg.on("showMessages", (opt) => {
+socketMsg.on("showMessages", () => {
   displayMsg();
 });
 socketMsg.on("showMsg", (ele) => {
   pushMsg(ele);
 });
+logout.onclick = async function (e) {
+  e.preventDefault();
+  localStorage.removeItem("user");
+  await axios.patch(
+    `http://localhost:3000/api/v1/user/${userId}/offline`,
+    {},
+    { withCredentials: true }
+  );
+  await axios.post(
+    "http://localhost:3000/api/v1/auth/logout",
+    {},
+    { withCredentials: true }
+  );
+  window.location.href = "http://localhost:8080/";
+};
 
 function pushMsg(ele) {
   const msg = document.createElement("div");

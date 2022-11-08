@@ -12,4 +12,7 @@ module.exports = (msgIo, socket) => {
       lastname: data.lastname,
     });
   });
+  socket.on("changeStatus", (userId) => {
+    socket.broadcast.emit("sendStatus", userId);
+  });
 };

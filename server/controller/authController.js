@@ -28,14 +28,9 @@ exports.signup = async (req, res, next) => {
       },
     });
     const token = generateToken({ userId: user.id, email: user.email });
-    res.cookie("token", `bearer ${token}`, {
-      sameSite: "strict",
-      maxAge: 2 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-    });
+    res.cookie("token", `bearer ${token}`, { httpOnly: true });
     res.status(201).json({ user });
   } catch (error) {
-    console.log(error.code);
     modelError(next, errorHandling, ClientErrorHandling, "user", error);
   }
 };

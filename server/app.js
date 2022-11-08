@@ -34,8 +34,14 @@ app.use((err, req, res, next) => {
 });
 const msgIo = io.of("/chat");
 msgIo.on("connection", (socket) => {
-  socket.on("connectName", (msg) => console.log(`connect with ${msg} `));
+  socket.on("connectName", (msg) => {
+    console.log(`connect with ${msg.name}`);
+    socket.emit("connectUser", msg.userId);
+  });
   require("./socket/chat")(msgIo, socket);
+  socket.on("disconnect", () => {
+    console.log("disconnect");
+  });
 });
 const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
