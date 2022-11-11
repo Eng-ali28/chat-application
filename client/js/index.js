@@ -2,13 +2,17 @@ import { io } from "socket.io-client";
 import axios from "axios";
 
 // ======global element======
-let userId, sName, sEmail;
+let userId, sName, sEmail, sPhone;
+const notification = document.querySelector(".notification");
+const notBtn = notification.querySelector(".notBtn");
+const notData = notification.querySelector(".notData");
 if (localStorage.getItem("user")) {
   userId = JSON.parse(localStorage.getItem("user")).userId;
   sName = JSON.parse(localStorage.getItem("user")).name;
   sEmail = JSON.parse(localStorage.getItem("user")).email;
+  sPhone = JSON.parse(localStorage.getItem("user")).phone;
   myName.innerText = sName;
-  myEmail.innerText = sEmail;
+  myEmail.innerText = sPhone;
 }
 
 // ======global function=====
@@ -16,7 +20,9 @@ if (userId) {
   signup.style.display = "none";
   login.style.display = "none";
   logout.style.display = "block";
-  getMychats(userId);
+  notification.style.display = "block";
+  notBtn.style.display = "block";
+  getMychats(sPhone);
 }
 if (!userId && window.location.pathname == "/chat.html") {
   window.location.pathname = "/";
@@ -38,31 +44,23 @@ arrow.addEventListener("click", (e) => {
   }
 });
 // ======get my chats========
-async function getMychats(userId) {
+async function getMychats(phone) {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/v1/inbox/?myId=${userId}`,
+      `http://localhost:3000/api/v1/inbox/?myPhone=${phone}`,
       { withCredentials: true }
     );
-    // const chats = response.data.inboxes
-    //   .map((ele) => {
-    //     return ele.userId.filter((element) => element.id !== userId);
-    //   })
-    //   .flat();
-    console.log(userId);
-    const chats = response.data.inboxes.filter((ele) => ele.userId.length > 1);
-    console.log(chats);
+    const chats = response.data.inboxes.filter((ele) => ele.user.length > 1);
     chats.forEach((friend) => {
-      const data = friend.userId.find((ele) => ele.id != userId);
-      // console.log(data);
+      const { user } = friend.user.find((ele) => ele.user.phone !== phone);
       const li = document.createElement("li");
       li.setAttribute("id", "chatEle");
-      if (data.status == "offline") {
+      if (user.status == "offline") {
         li.classList.add("nameFriend", "offline");
       } else {
         li.classList.add("nameFriend", "active");
       }
-      li.innerText = `${data.firstname} ${data.lastname}  \n`;
+      li.innerText = `${user.firstname} ${user.lastname}  \n`;
       const span = document.createElement("span");
       span.className = "chatIds";
       span.innerText = `${friend.id}`;
@@ -88,9 +86,9 @@ setTimeout(() => {
 // ======socket section======
 const socketMsg = io("http://localhost:3000/chat");
 socketMsg.on("connect", async () => {});
-socketMsg.emit("connectName", { name: sName, userId });
+socketMsg.emit("connectName", { name: sName, phone: sPhone, userId });
 socketMsg.on("connectUser", async (userId) => {
-  await axios.patch(
+  const user = await axios.patch(
     `http://localhost:3000/api/v1/user/${userId}/online`,
     {},
     { withCredentials: true }
@@ -100,17 +98,23 @@ socketMsg.on("connectUser", async (userId) => {
 addBtn.addEventListener("click", async (e) => {
   try {
     e.preventDefault();
-    const inboxInfo = await axios.post(
+    if (addInput.value == "") return;
+    const response = await axios.post(
       `http://localhost:3000/api/v1/inbox/${addInput.value}`,
       {},
       { withCredentials: true }
     );
-    window.location.reload();
-    console.log(inboxInfo);
+    socketMsg.emit(
+      "add-chat",
+      { friend: addInput.value, myPhone: sPhone },
+      (fr) => getMychats(fr)
+    );
+    addInput.value = "";
   } catch (error) {
     console.log("from here", error);
   }
 });
+
 let roomVal;
 goRoom.addEventListener("click", async (e) => {
   try {
@@ -124,18 +128,21 @@ goRoom.addEventListener("click", async (e) => {
 });
 sendMsg.addEventListener("click", async (e) => {
   e.preventDefault();
+  scrollToBottom();
   const response = await axios.post(
     `http://localhost:3000/api/v1/messages/${roomVal}`,
     { content: message.value },
     { withCredentials: true }
   );
   const msg = response.data.message;
+  const friendId = msg.inbox.user.find((ele) => ele.user.phone !== sPhone);
   socketMsg.emit("createMsg", {
     content: msg.content,
     creator: msg.creator.id,
     firstname: msg.creator.firstname,
     lastname: msg.creator.lastname,
     room: msg.inboxId,
+    friendId: friendId.user.phone,
     date: msg.createdAt.substring(0, 10),
   });
   message.value = "";
@@ -148,7 +155,6 @@ async function displayMsg() {
       { withCredentials: true }
     );
     const messageInfo = response.data.messages;
-    console.log(messageInfo);
     messageInfo.forEach((ele) => {
       pushMsg(ele);
     });
@@ -161,6 +167,9 @@ socketMsg.on("showMessages", () => {
 });
 socketMsg.on("showMsg", (ele) => {
   pushMsg(ele);
+});
+socketMsg.on("get-chat", (friend) => {
+  getMychats(friend);
 });
 logout.onclick = async function (e) {
   e.preventDefault();
@@ -200,5 +209,33 @@ function pushMsg(ele) {
   msg.appendChild(nameMsg);
   msg.appendChild(mainMsg);
   msg.appendChild(dateMsg);
+  msgBox.scrollTop = msgBox.scrollHeight - msgBox.clientHeight + 200;
+
   return msgBox.appendChild(msg);
 }
+// ======notification section======
+function addNotification(fname, lname) {
+  const listNotification = document.createElement("li");
+  listNotification.innerText = `message from ${fname} ${lname}`;
+  notData.appendChild(listNotification);
+}
+socketMsg.on("notyMsg", (data) => {
+  addNotification(data.firstname, data.lastname);
+  notBtn.classList.add("active");
+});
+notBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (notBtn.getAttribute("attr-show") == "hide") {
+    notBtn.setAttribute("attr-show", "show");
+    notBtn.classList.remove("active");
+    notData.style.display = "block";
+    if (notData.innerHTML == "") {
+      notData.innerHTML = `<li>Nothing</li>`;
+    } else {
+      notBtn.innerHTML = "";
+    }
+  } else if (notBtn.getAttribute("attr-show") == "show") {
+    notBtn.setAttribute("attr-show", "hide");
+    notData.style.display = "none";
+  }
+});

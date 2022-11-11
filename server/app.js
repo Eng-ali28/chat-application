@@ -36,6 +36,7 @@ const msgIo = io.of("/chat");
 msgIo.on("connection", (socket) => {
   socket.on("connectName", (msg) => {
     console.log(`connect with ${msg.name}`);
+    socket.join(msg.phone);
     socket.emit("connectUser", msg.userId);
   });
   require("./socket/chat")(msgIo, socket);

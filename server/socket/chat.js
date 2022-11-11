@@ -4,6 +4,11 @@ module.exports = (msgIo, socket) => {
     msgIo.to(opt.roomName).emit("showMessages", opt);
   });
   socket.on("createMsg", (data) => {
+    msgIo.to(data.friendId).emit("notyMsg", {
+      firstname: data.firstname,
+      lastname: data.lastname,
+      inboxId: data.room,
+    });
     msgIo.to(data.room).emit("showMsg", {
       creator: data.creator,
       content: data.content,
@@ -12,7 +17,8 @@ module.exports = (msgIo, socket) => {
       lastname: data.lastname,
     });
   });
-  socket.on("changeStatus", (userId) => {
-    socket.broadcast.emit("sendStatus", userId);
+  socket.on("add-chat", (obj, cb) => {
+    cb(obj.myPhone);
+    msgIo.to(obj.friend).emit("get-chat", obj.friend, cb);
   });
 };

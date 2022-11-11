@@ -13,12 +13,23 @@ body {
   background-color: #eee;
   height: 100vh;
 }
+.noty {
+  margin: auto;
+  color: white;
+  font-size: 20px;
+  background-color: rgba(240, 0, 0, 0.6);
+  padding: 10px 20px;
+  border: 1px solid tomato;
+  transition: all 0.4s ease;
+}
 header {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  height: 97px;
   padding: 15px 20px;
   background-color: #fff;
+  position: relative;
 }
 header .logo {
   padding: 15px;
@@ -28,10 +39,61 @@ header .logo {
   -moz-border-radius: 12px;
   -ms-border-radius: 12px;
   -o-border-radius: 12px;
+  z-index: 1;
 }
 header .logo i {
   color: var(--main-color);
   font-size: 35px;
+}
+header .notification {
+  position: relative;
+}
+header .notification .notBtn {
+  font-size: 28px;
+  color: var(--main-color);
+  display: none;
+  margin-right: 15px;
+  cursor: pointer;
+  text-align: end;
+  position: relative;
+}
+header .notification .notBtn.active {
+  color: tomato;
+  boxshadow: 0px 0px 5px red;
+}
+header .notification .notData {
+  padding: 10px;
+  background-color: white;
+  display: none;
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 200px;
+  max-width: 250px;
+  max-height: 100vh;
+  z-index: 10;
+  position: absolute;
+  top: 40px;
+}
+header .notification .notData::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  border-width: 10px;
+  border-style: solid;
+  z-index: 10;
+  border-color: transparent transparent #ccc transparent;
+}
+header .notification .notData li {
+  color: var(--main-color);
+  font-size: 18px;
+  padding: 10px 15px;
+  margin: 5px 0px;
+  background-color: #eee;
+}
+header .register {
+  z-index: 1;
 }
 header .register .btn {
   text-decoration: none;
@@ -133,19 +195,10 @@ header .register .btn-sign {
   justify-content: space-between;
   align-items: center;
 }
-.chatInfo #chatIds #msgCopied {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 6px;
-  width: fit-content;
-  color: #fff;
-  border-radius: 5px;
-  z-index: 10;
-  opacity: 0.7;
-  background-color: #4caf50;
-  /* display: none; */
-  transition: all 0.3s ease;
+.chatInfo .addChat ::placeholder {
+  color: var(--main-color);
+  font-size: 17px;
+  text-transform: capitalize;
 }
 .chatInfo .addChat .addInput {
   flex-basis: 65%;
@@ -156,6 +209,9 @@ header .register .btn-sign {
   color: var(--main-color);
   border-radius: 8px;
   border: 1px solid var(--main-color);
+}
+.chatInfo .addChat .addInput:focus {
+  box-shadow: 0px 0px 5px var(--main-color);
 }
 .chatInfo .addChat .addBtn {
   flex-basis: 30%;
@@ -313,6 +369,9 @@ header .register .btn-sign {
   font-size: 18px;
   outline: none;
   margin-left: 7px;
+}
+.container #form span input:focus {
+  box-shadow: 0px 0px 5px var(--main-color);
 }
 .container #form span ::placeholder {
   color: #cac8daa8;

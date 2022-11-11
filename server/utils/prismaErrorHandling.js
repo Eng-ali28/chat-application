@@ -12,8 +12,11 @@ module.exports = (next, errorHandling, clientHandling, modelName, e) => {
         )
       );
     }
+    if (e.code == "P2003") {
+      next(createError(400, `The record ${e.meta.field_name} does not exist`));
+    }
     if (e.code == "P2002") {
-      next(createError(400, `email is exists`));
+      next(createError(400, `${e.meta.target.split("_")[1]} is exists`));
     }
     if (e.code == "P2005") {
       next(

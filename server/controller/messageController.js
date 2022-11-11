@@ -10,6 +10,7 @@ exports.createMessage = async (req, res, next) => {
   try {
     const { inboxId } = req.params;
     const { content } = req.body;
+    console.log(req.user.userId);
     const message = await prisma.message.create({
       data: {
         content,
@@ -22,10 +23,15 @@ exports.createMessage = async (req, res, next) => {
         inboxId: true,
         creator: { select: { id: true, firstname: true, lastname: true } },
         createdAt: true,
+        inbox: {
+          select: { user: { select: { user: { select: { phone: true } } } } },
+        },
       },
     });
+    console.log(message);
     res.status(201).json({ message });
   } catch (error) {
+    console.log(error);
     modelError(next, errorHandling, ClientErrorHandling, "message", error);
   }
 };

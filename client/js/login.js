@@ -26,6 +26,7 @@ form.addEventListener("submit", async (e) => {
         userId: response.data.user.id,
         name: `${response.data.user.firstname} ${response.data.user.lastname}`,
         email: response.data.user.email,
+        phone: response.data.user.phone,
       })
     );
 

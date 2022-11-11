@@ -7,43 +7,63 @@ const {
 const modelError = require("../utils/prismaErrorHandling");
 exports.createInbox = async (req, res, next) => {
   try {
-    const { friendId } = req.params;
+    const { friendPhone } = req.params;
     const inbox = await prisma.inbox.create({
       data: {
-        userId: { connect: [{ id: friendId }, { id: req.user.userId }] },
+        user: {
+          create: [
+            { user: { connect: { phone: friendPhone } } },
+            { user: { connect: { phone: req.user.phone } } },
+          ],
+        },
       },
       select: {
         id: true,
         lastMessageSent: true,
-        userId: {
-          select: { id: true, firstname: true, lastname: true, email: true },
+        user: {
+          select: {
+            user: {
+              select: {
+                phone: true,
+                firstname: true,
+                lastname: true,
+                email: true,
+                status: true,
+              },
+            },
+          },
         },
       },
     });
     res.status(201).json({ inbox });
   } catch (error) {
+    console.log(error);
     modelError(next, errorHandling, ClientErrorHandling, "inbox", error);
   }
 };
 
 exports.getAllInbox = async (req, res, next) => {
   try {
-    const { myId } = req.query;
+    const { myPhone } = req.query;
     const inboxes = await prisma.inbox.findMany({
       where: {
-        userId: { some: { id: myId } },
+        user: { some: { user: { phone: myPhone } } },
       },
       select: {
         id: true,
         lastMessageSent: true,
 
-        userId: {
+        user: {
           select: {
-            id: true,
-            firstname: true,
-            status: true,
-            lastname: true,
-            email: true,
+            user: {
+              select: {
+                phone: true,
+                firstname: true,
+                status: true,
+                lastname: true,
+                email: true,
+              },
+            },
           },
         },
       },

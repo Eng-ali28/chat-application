@@ -7,7 +7,7 @@ const {
 } = require("../controller/inboxController");
 const { protect } = require("../controller/authController");
 router.get("/", protect, getAllInbox);
-router.route("/:friendId").post(protect, createInbox);
+router.route("/:friendPhone").post(protect, createInbox);
 router
   .route("/:inboxId")
   .get(protect, getSpecificInbox)

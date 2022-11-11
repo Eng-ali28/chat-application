@@ -12,25 +12,21 @@ const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res, next) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, phone } = req.body;
     const user = await prisma.user.create({
       data: {
         firstname,
         lastname,
         email,
+        phone,
         password,
-        inboxId: {
-          create: {},
-        },
-      },
-      include: {
-        inboxId: true,
       },
     });
     const token = generateToken({ userId: user.id, email: user.email });
     res.cookie("token", `bearer ${token}`, { httpOnly: true });
     res.status(201).json({ user });
   } catch (error) {
+    console.log(error);
     modelError(next, errorHandling, ClientErrorHandling, "user", error);
   }
 };
@@ -83,6 +79,7 @@ exports.protect = async (req, res, next) => {
   req.user = {
     userId: user.id,
     name: `${user.firstname} ${user.lastname}`,
+    phone: user.phone,
     email: user.email,
   };
   next();
