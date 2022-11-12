@@ -78,7 +78,6 @@ setTimeout(() => {
   for (let ele of arrChat) {
     ele.onclick = (e) => {
       navigator.clipboard.writeText(ele.innerText);
-      room.value = ele.innerText;
     };
   }
 }, 300);
@@ -115,39 +114,33 @@ addBtn.addEventListener("click", async (e) => {
   }
 });
 
-let roomVal;
-goRoom.addEventListener("click", async (e) => {
+sendMsg.addEventListener("click", async (e) => {
   try {
     e.preventDefault();
-    roomVal = room.value;
-    socketMsg.emit("join-room", { roomName: room.value, userId });
-    room.value = "";
-  } catch (error) {
-    console.log(error);
-  }
+    const url = new URL(window.location.href).searchParams;
+    const roomVal = url.get("id");
+    console.log(roomVal);
+    if (!roomVal) return new Error("can't join to this room.");
+    const response = await axios.post(
+      `http://localhost:3000/api/v1/messages/${roomVal}`,
+      { content: message.value },
+      { withCredentials: true }
+    );
+    const msg = response.data.message;
+    const friendId = msg.inbox.user.find((ele) => ele.user.phone !== sPhone);
+    socketMsg.emit("createMsg", {
+      content: msg.content,
+      creator: msg.creator.id,
+      firstname: msg.creator.firstname,
+      lastname: msg.creator.lastname,
+      room: msg.inboxId,
+      friendId: friendId.user.phone,
+      date: msg.createdAt.substring(0, 10),
+    });
+    message.value = "";
+  } catch (error) {}
 });
-sendMsg.addEventListener("click", async (e) => {
-  e.preventDefault();
-  scrollToBottom();
-  const response = await axios.post(
-    `http://localhost:3000/api/v1/messages/${roomVal}`,
-    { content: message.value },
-    { withCredentials: true }
-  );
-  const msg = response.data.message;
-  const friendId = msg.inbox.user.find((ele) => ele.user.phone !== sPhone);
-  socketMsg.emit("createMsg", {
-    content: msg.content,
-    creator: msg.creator.id,
-    firstname: msg.creator.firstname,
-    lastname: msg.creator.lastname,
-    room: msg.inboxId,
-    friendId: friendId.user.phone,
-    date: msg.createdAt.substring(0, 10),
-  });
-  message.value = "";
-});
-async function displayMsg() {
+async function displayMsg(roomVal) {
   try {
     msgBox.innerHTML = "";
     const response = await axios.get(
@@ -162,8 +155,8 @@ async function displayMsg() {
     console.log(error);
   }
 }
-socketMsg.on("showMessages", () => {
-  displayMsg();
+socketMsg.on("showMessages", (opt) => {
+  displayMsg(opt.roomName);
 });
 socketMsg.on("showMsg", (ele) => {
   pushMsg(ele);
@@ -172,21 +165,25 @@ socketMsg.on("get-chat", (friend) => {
   getMychats(friend);
 });
 logout.onclick = async function (e) {
-  e.preventDefault();
-  localStorage.removeItem("user");
-  await axios.patch(
-    `http://localhost:3000/api/v1/user/${userId}/offline`,
-    {},
-    { withCredentials: true }
-  );
-  await axios.post(
-    "http://localhost:3000/api/v1/auth/logout",
-    {},
-    { withCredentials: true }
-  );
-  window.location.href = "http://localhost:8080/";
+  try {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    console.log("hello");
+    await axios.patch(
+      `http://localhost:3000/api/v1/user/${userId}/offline`,
+      {},
+      { withCredentials: true }
+    );
+    await axios.post(
+      "http://localhost:3000/api/v1/auth/logout",
+      {},
+      { withCredentials: true }
+    );
+    window.location.href = "http://localhost:8080/";
+  } catch (error) {
+    console.log(error);
+  }
 };
-
 function pushMsg(ele) {
   const msg = document.createElement("div");
   let name = ele.firstname
@@ -237,5 +234,21 @@ notBtn.addEventListener("click", (e) => {
   } else if (notBtn.getAttribute("attr-show") == "show") {
     notBtn.setAttribute("attr-show", "hide");
     notData.style.display = "none";
+  }
+});
+const url = new URL(window.location.href);
+
+document.addEventListener("click", (e) => {
+  if (e.target.id == "chatEle" || e.target.classList.contains("chatIds")) {
+    const room = e.target.querySelector(".chatIds").innerText;
+
+    url.searchParams.set("id", room);
+    window.history.pushState({}, "", url);
+    try {
+      e.preventDefault();
+      socketMsg.emit("join-room", { roomName: room, userId });
+    } catch (error) {
+      console.log(error);
+    }
   }
 });

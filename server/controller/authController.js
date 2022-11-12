@@ -9,7 +9,12 @@ const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
 // ====== start signup section ====
 // middleware for crypt password
-
+exports.editPhone = (req, res, next) => {
+  req.body.phone = req.body.phone.startsWith("963")
+    ? req.body.phone.replace(/^963/, "0")
+    : req.body.phone.replace(/^\+963/, "0");
+  next();
+};
 exports.signup = async (req, res, next) => {
   try {
     const { firstname, lastname, email, password, phone } = req.body;

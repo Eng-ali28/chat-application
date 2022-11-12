@@ -21,4 +21,7 @@ module.exports = (msgIo, socket) => {
     cb(obj.myPhone);
     msgIo.to(obj.friend).emit("get-chat", obj.friend, cb);
   });
+  socket.on("disconnect", () => {
+    socket.emit("disconnected");
+  });
 };

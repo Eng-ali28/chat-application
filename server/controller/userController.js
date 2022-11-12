@@ -1,10 +1,11 @@
-const createError = require("http-errors");
+const { setOffline } = require("../service/userService");
 const {
   prisma,
   errorHandling,
   ClientErrorHandling,
 } = require("./prismaClient");
 const modelError = require("../utils/prismaErrorHandling");
+const createError = require("http-errors");
 const bcrypt = require("bcryptjs");
 // desc     create new user
 // route    POST /api/v1/user
@@ -140,16 +141,23 @@ exports.updataStatusOnline = async (req, res, next) => {
 // desc     update status
 // route    PATCH /api/v1/user/:userId
 // access   public
-
+// const setOffline = async (userId) => {
+//   return new Promise((resolve, reject) => {
+//     console.log("here");
+//     const user = prisma.user.update({
+//       where: { id: userId },
+//       data: {
+//         status: "offline",
+//       },
+//     });
+//     resolve(user);
+//     reject(new Error("something went error"));
+//   });
+// };
 exports.updataStatusOffline = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        status: "offline",
-      },
-    });
+    const user = await setOffline(userId);
     res.status(203).json({ data: user });
   } catch (e) {
     modelError(next, errorHandling, ClientErrorHandling, "user", e);

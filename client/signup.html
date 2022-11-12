@@ -54,12 +54,14 @@
             required
           />
           <input
-            type="number"
+            type="tel"
             name="phone"
             id="phone"
             placeholder="phone"
             class="outline-none text-lg font-medium placeholder:text-lg w-4/6 placeholder-violet-400 px-4 py-3 mb-3 text-violet-600 border-2 border-violet-600 rounded-lg"
             required
+            pattern="^(09){1}([0-9]){8}$"
+            title="phone example : 09xxxxxxxx"
           />
           <input
             type="password"
