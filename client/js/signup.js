@@ -1,6 +1,8 @@
 const form = document.querySelector("form");
-import axios from "axios";
-
+// import axios from "axios";
+const baseURL = "https://chat-idea.herokuapp.com";
+const secondURL = "https://eng-ali28.github.io/chat-application-client";
+axios.defaults.withCredentials = true;
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
   try {
@@ -14,11 +16,12 @@ form.addEventListener("submit", async function (e) {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/api/v1/auth/signup",
+      `${baseURL}/api/v1/auth/signup`,
       formData,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+      }
     );
-    console.log(response);
     if (response.data.errors) {
       errorBoxSign.innerHTML = "";
       response.data.errors.forEach((ele) => {
@@ -40,10 +43,10 @@ form.addEventListener("submit", async function (e) {
           phone: response.data.user.phone,
         })
       );
-      window.location.href = "http://localhost:8080/chat.html";
+      window.location.href = `${secondURL}/chat.html`;
     }
   } catch (error) {
-    console.log(error.response.data.message);
+    console.log(error);
     if (error.response.data.message) {
       errorBoxSign.innerHTML = "";
       const li = document.createElement("li");

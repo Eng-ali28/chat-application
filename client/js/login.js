@@ -1,5 +1,7 @@
-import axios from "axios";
-const baseURL = "http://localhost:3000";
+// import axios from "axios";
+const baseURL = "https://chat-idea.herokuapp.com";
+const secondURL = "https://eng-ali28.github.io/chat-application-client";
+axios.defaults.withCredentials = true;
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = { email: email.value, password: password.value };
@@ -30,6 +32,6 @@ form.addEventListener("submit", async (e) => {
       })
     );
 
-    window.location.replace("http://localhost:8080/chat.html");
+    window.location.replace(`${secondURL}/chat.html`);
   }
 });

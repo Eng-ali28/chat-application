@@ -5,11 +5,18 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-// router section
+// router sections
 const app = express();
 app.use(cookieParser());
+const corsOptions = {
+  origin: function (origin, callback) {
+    return callback(null, true);
+  },
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
-app.use(cors({ origin: "http://localhost:8080", credentials: true }));
 const httpServer = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer, { cors: { origin: "*" } });
@@ -35,14 +42,10 @@ app.use((err, req, res, next) => {
 const msgIo = io.of("/chat");
 msgIo.on("connection", (socket) => {
   socket.on("connectName", (msg) => {
-    console.log(`connect with ${msg.name}`);
     socket.join(msg.phone);
     socket.emit("connectUser", msg.userId);
   });
   require("./socket/chat")(msgIo, socket);
-  socket.on("disconnect", () => {
-    console.log("disconnect");
-  });
 });
 const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));

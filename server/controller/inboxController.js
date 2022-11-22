@@ -82,8 +82,18 @@ exports.getSpecificInbox = async (req, res, next) => {
       select: {
         id: true,
         lastMessageSent: true,
-        userId: {
-          select: { id: true, firstname: true, lastname: true, email: true },
+        user: {
+          select: {
+            user: {
+              select: {
+                phone: true,
+                firstname: true,
+                status: true,
+                lastname: true,
+                email: true,
+              },
+            },
+          },
         },
         messages: {
           select: { content: true, userId: true },

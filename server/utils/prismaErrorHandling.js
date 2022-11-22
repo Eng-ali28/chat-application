@@ -16,7 +16,9 @@ module.exports = (next, errorHandling, clientHandling, modelName, e) => {
       next(createError(400, `The record ${e.meta.field_name} does not exist`));
     }
     if (e.code == "P2002") {
-      next(createError(400, `${e.meta.target.split("_")[1]} is exists`));
+      if (Array.isArray(e.meta.target)) {
+        next(createError(400, `${e.meta.target.join(",")} is exists`));
+      } else next(createError(400, `${e.meta.target.split("_")[1]} is exists`));
     }
     if (e.code == "P2005") {
       next(
@@ -37,6 +39,6 @@ module.exports = (next, errorHandling, clientHandling, modelName, e) => {
     }
   }
   if (e instanceof clientHandling) {
-    next(createError(400, `there aren't any ${modelName} exists. `));
+    next(createError(400, `An argument for ${modelName} is missing. `));
   }
 };

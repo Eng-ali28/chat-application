@@ -1,5 +1,5 @@
-import { io } from "socket.io-client";
-import axios from "axios";
+// import { io } from "socket.io-client";
+// import axios from "axios";
 
 // ======global element======
 let userId, sName, sEmail, sPhone;
@@ -14,7 +14,8 @@ if (localStorage.getItem("user")) {
   myName.innerText = sName;
   myEmail.innerText = sPhone;
 }
-
+const baseURL = "https://chat-idea.herokuapp.com";
+axios.defaults.withCredentials = true;
 // ======global function=====
 if (userId) {
   signup.style.display = "none";
@@ -46,8 +47,9 @@ arrow.addEventListener("click", (e) => {
 // ======get my chats========
 async function getMychats(phone) {
   try {
+    listChat.innerHTML = "";
     const response = await axios.get(
-      `http://localhost:3000/api/v1/inbox/?myPhone=${phone}`,
+      `${baseURL}/api/v1/inbox/?myPhone=${phone}`,
       { withCredentials: true }
     );
     const chats = response.data.inboxes.filter((ele) => ele.user.length > 1);
@@ -72,23 +74,13 @@ async function getMychats(phone) {
   }
 }
 
-setTimeout(() => {
-  const chatId = document.querySelectorAll(".chatIds");
-  const arrChat = [...chatId];
-  for (let ele of arrChat) {
-    ele.onclick = (e) => {
-      navigator.clipboard.writeText(ele.innerText);
-    };
-  }
-}, 300);
-
 // ======socket section======
-const socketMsg = io("http://localhost:3000/chat");
+const socketMsg = io(`${baseURL}/chat`);
 socketMsg.on("connect", async () => {});
 socketMsg.emit("connectName", { name: sName, phone: sPhone, userId });
 socketMsg.on("connectUser", async (userId) => {
   const user = await axios.patch(
-    `http://localhost:3000/api/v1/user/${userId}/online`,
+    `${baseURL}/api/v1/user/${userId}/online`,
     {},
     { withCredentials: true }
   );
@@ -99,7 +91,7 @@ addBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     if (addInput.value == "") return;
     const response = await axios.post(
-      `http://localhost:3000/api/v1/inbox/${addInput.value}`,
+      `${baseURL}/api/v1/inbox/${addInput.value}`,
       {},
       { withCredentials: true }
     );
@@ -119,10 +111,9 @@ sendMsg.addEventListener("click", async (e) => {
     e.preventDefault();
     const url = new URL(window.location.href).searchParams;
     const roomVal = url.get("id");
-    console.log(roomVal);
     if (!roomVal) return new Error("can't join to this room.");
     const response = await axios.post(
-      `http://localhost:3000/api/v1/messages/${roomVal}`,
+      `${baseURL}/api/v1/messages/${roomVal}`,
       { content: message.value },
       { withCredentials: true }
     );
@@ -143,10 +134,9 @@ sendMsg.addEventListener("click", async (e) => {
 async function displayMsg(roomVal) {
   try {
     msgBox.innerHTML = "";
-    const response = await axios.get(
-      `http://localhost:3000/api/v1/messages/${roomVal}`,
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${baseURL}/api/v1/messages/${roomVal}`, {
+      withCredentials: true,
+    });
     const messageInfo = response.data.messages;
     messageInfo.forEach((ele) => {
       pushMsg(ele);
@@ -164,22 +154,23 @@ socketMsg.on("showMsg", (ele) => {
 socketMsg.on("get-chat", (friend) => {
   getMychats(friend);
 });
+const secondURL = "https://eng-ali28.github.io/chat-application-client";
 logout.onclick = async function (e) {
   try {
     e.preventDefault();
-    localStorage.removeItem("user");
-    console.log("hello");
+    window.location.href = `${secondURL}`;
+
     await axios.patch(
-      `http://localhost:3000/api/v1/user/${userId}/offline`,
+      `${baseURL}/api/v1/user/${userId}/offline`,
       {},
       { withCredentials: true }
     );
     await axios.post(
-      "http://localhost:3000/api/v1/auth/logout",
+      `${baseURL}/api/v1/auth/logout`,
       {},
       { withCredentials: true }
     );
-    window.location.href = "http://localhost:8080/";
+    localStorage.removeItem("user");
   } catch (error) {
     console.log(error);
   }

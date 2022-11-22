@@ -70,7 +70,8 @@ header .notification .notData {
   border-radius: 4px;
   min-width: 200px;
   max-width: 250px;
-  max-height: 100vh;
+  max-height: 50vh;
+  overflow-y: auto;
   z-index: 10;
   position: absolute;
   top: 40px;
@@ -202,6 +203,7 @@ header .register .btn-sign {
 }
 .chatInfo .addChat .addInput {
   flex-basis: 65%;
+  max-width: 100%;
   background-color: #eee;
   outline: none;
   padding: 10px;
@@ -265,9 +267,8 @@ header .register .btn-sign {
   }
 }
 .container .message-box {
-  margin: 0px auto;
   height: 400px;
-  width: 600px;
+  width: 400px;
   max-width: 100%;
   padding: 10px 20px;
   background-color: #fff;
@@ -277,7 +278,7 @@ header .register .btn-sign {
 }
 /* width */
 .container .message-box::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 /* Track */
@@ -353,13 +354,13 @@ header .register .btn-sign {
 .container #form {
   display: flex;
   flex-direction: column;
-  margin: 0px auto;
-  width: 600px;
+  width: 400px;
   max-width: 100%;
   padding: 20px 20px 0px 20px;
 }
 .container #form .element {
-  width: 100%;
+  width: 400px;
+  max-width: 100%;
   padding: 0px 10px 10px 10px;
   margin: auto;
 }

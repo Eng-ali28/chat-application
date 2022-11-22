@@ -28,10 +28,13 @@ exports.signup = async (req, res, next) => {
       },
     });
     const token = generateToken({ userId: user.id, email: user.email });
-    res.cookie("token", `bearer ${token}`, { httpOnly: true });
+    res.cookie("token", `bearer ${token}`, {
+      httpOnly: true,
+      sameSite: "None",
+      // secure: true,
+    });
     res.status(201).json({ user });
   } catch (error) {
-    console.log(error);
     modelError(next, errorHandling, ClientErrorHandling, "user", error);
   }
 };
@@ -46,7 +49,11 @@ exports.login = async (req, res, next) => {
       next(createError(400, "user with this email not exists"));
     }
     const token = generateToken({ userId: user.id, email: user.email });
-    res.cookie("token", `bearer ${token}`, { httpOnly: true });
+    res.cookie("token", `bearer ${token}`, {
+      httpOnly: true,
+      sameSite: "None",
+      // secure: true,
+    });
     res.status(200).json({ user });
   } catch (error) {
     modelError(next, errorHandling, ClientErrorHandling, "user", error);

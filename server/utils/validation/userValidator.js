@@ -21,7 +21,6 @@ exports.createValidator = [
     .custom((val) => {
       return prisma.user.findFirst({ where: { email: val } }).then((user) => {
         if (user) {
-          console.log(user);
           throw new Error("email is exists");
         }
         return true;

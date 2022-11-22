@@ -21,7 +21,6 @@ exports.loginValidator = [
           return bcrypt
             .compare(req.body.password, user.password)
             .then((result) => {
-              console.log(result);
               if (!result) {
                 throw new Error("password incorrect, try again");
               }
